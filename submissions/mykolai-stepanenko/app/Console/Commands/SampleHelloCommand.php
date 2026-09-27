@@ -18,7 +18,7 @@ class SampleHelloCommand extends Command
         return self::SUCCESS;
     }
 
-    function sample($arg)
+    public function sample(mixed $arg): mixed
     {
         return $arg;
     }
