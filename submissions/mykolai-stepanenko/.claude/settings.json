@@ -79,6 +79,14 @@
               "${CLAUDE_PROJECT_DIR}/.claude/hooks/phpstan.sh"
             ],
             "timeout": 180
+          },
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/tests.sh"
+            ],
+            "timeout": 300
           }
         ]
       }
@@ -110,6 +118,15 @@
               "stop"
             ],
             "timeout": 180
+          },
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/tests.sh",
+              "stop"
+            ],
+            "timeout": 300
           }
         ]
       }

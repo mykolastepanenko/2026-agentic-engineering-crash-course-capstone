@@ -20,6 +20,8 @@ Hooks in `.claude/hooks/*.mjs` run through `.claude/hooks/run-node.sh`, which ex
 
 `.claude/hooks/phpstan.sh` runs `vendor/bin/phpstan --memory-limit=2G` in the `app` container: on PostToolUse (`Edit|Write|MultiEdit`) after any `.php` file is written — errors exit 2 and come back to the agent — and on Stop, where it blocks finishing the turn while errors remain (max 3 forced retries, counter in `.claude/.phpstan-stop-attempts`). **Larastan errors must be fixed immediately, in code** — never with `@phpstan-ignore`, a baseline, or a lower level. Skipped when `app` isn't running.
 
+`.claude/hooks/tests.sh` works the same way for the test suite: after any `.php` write (PostToolUse) and on Stop it runs `php artisan test --compact` in `app`; failures exit 2 / block the Stop (max 3 retries, counter in `.claude/.tests-stop-attempts`). **Failing tests must be fixed immediately** — fix production code; if a test itself is wrong, hand it to `laravel-tester`; never delete, skip or weaken a test. The only expected red is `laravel-tester`'s TDD red phase (the hook tells it so via `agent_type`). Logged as `hook:tests`.
+
 ## Commands
 
 Export `UID`/`GID` first so the image is built with your user IDs (zsh's `UID` is read-only but already set, so just `export UID GID=$(id -g)`):

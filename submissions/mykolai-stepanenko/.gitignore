@@ -26,3 +26,4 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 /.claude/.phpstan-stop-attempts
+/.claude/.tests-stop-attempts
