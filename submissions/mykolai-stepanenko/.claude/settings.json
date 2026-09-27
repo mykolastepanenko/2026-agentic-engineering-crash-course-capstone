@@ -30,8 +30,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/protect-env.mjs"],
+            "command": "sh",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/protect-env.mjs"],
             "timeout": 10
           }
         ]
@@ -41,8 +41,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/log-action.mjs"],
+            "command": "sh",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
             "timeout": 10
           }
         ]
@@ -54,8 +54,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/log-action.mjs"],
+            "command": "sh",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
             "timeout": 10
           }
         ]
@@ -67,8 +67,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/log-action.mjs"],
+            "command": "sh",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
             "timeout": 10
           }
         ]

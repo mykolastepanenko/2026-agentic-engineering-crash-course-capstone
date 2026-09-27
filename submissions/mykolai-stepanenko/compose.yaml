@@ -40,6 +40,19 @@ services:
       timeout: 5s
       retries: 20
 
+  node:
+    image: node:26-alpine
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /var/www/html
+    command: ["tail", "-f", "/dev/null"]
+    init: true
+    environment:
+      HOME: /tmp
+    ports:
+      - "${VITE_PORT:-5173}:5173"
+    volumes:
+      - ./:/var/www/html
+
   redis:
     image: redis:8-alpine
     ports:
