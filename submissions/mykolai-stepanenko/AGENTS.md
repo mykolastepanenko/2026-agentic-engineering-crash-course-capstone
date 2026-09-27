@@ -32,6 +32,8 @@ docker compose exec node npm install && docker compose exec node npm run build
 
 Larastan config is `phpstan.neon` (level 5, paths `app/`). Don't lower the level or add ignores to make analysis pass — fix the code.
 
+Tests are owned by the `laravel-tester` subagent (`.claude/agents/laravel-tester.md`, TDD): delegate writing failing tests to it before implementing a feature or fix, implement until they pass, then have it verify the suite. It edits only `tests/`.
+
 Laravel Boost (`laravel/boost`, dev) is installed. Its MCP server `laravel-boost` runs in the container (`.mcp.json` → `docker compose exec -T app php artisan boost:mcp`), so the stack must be up. Boost's generated guidelines below say `php artisan …`/`vendor/bin/…` — run them via `docker compose exec app`. Refresh guidelines/skills with `docker compose exec app php artisan boost:update`; don't hand-edit the `<laravel-boost-guidelines>` block.
 
 ===
