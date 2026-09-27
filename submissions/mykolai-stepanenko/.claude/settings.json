@@ -113,6 +113,51 @@
           }
         ]
       }
+    ],
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "enabledMcpjsonServers": [

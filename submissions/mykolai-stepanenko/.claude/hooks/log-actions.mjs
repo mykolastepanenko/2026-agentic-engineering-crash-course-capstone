@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Claude Code hook for PreToolUse, PostToolUse and PostToolUseFailure.
+// Claude Code hook for PreToolUse, PostToolUse, PostToolUseFailure, InstructionsLoaded, SubagentStart and SubagentStop.
 // Appends ONE JSON line per event to .agent-log/actions.jsonl:
 //   PreToolUse         -> { ts, event, id, session, mode, tool, path | cmd | pattern | url }   = "agent proposed"
 //   PostToolUse        -> { ..., exit: 0, ms }                                                  = "agent did"
@@ -46,13 +46,40 @@ const entry = {
     id: ev.tool_use_id,
     session: String(ev.session_id ?? "").slice(0, 8),
     mode: ev.permission_mode,
-    tool,
+    ...(tool !== "unknown" ? { tool } : {}),
     ...(ti.file_path ? { path: rel(ti.file_path) } : {}),
     ...(ti.notebook_path ? { path: rel(ti.notebook_path) } : {}),
     ...(ti.command ? { cmd: String(ti.command).slice(0, 200) } : {}),
     ...(ti.pattern ? { pattern: ti.pattern } : {}),
     ...(ti.url ? { url: ti.url } : {}),
+    ...(ti.subagent_type ? { subagent: ti.subagent_type } : {}),
+    ...(ev.agent_type ? { agent: ev.agent_type } : {}),
+    ...(ev.agent_id ? { agent_id: ev.agent_id } : {}),
 };
+
+// InstructionsLoaded: CLAUDE.md / AGENTS.md / .claude/rules/*.md pulled into context.
+if (event === "InstructionsLoaded") {
+    entry.path = rel(ev.file_path);
+    entry.reason = ev.load_reason;
+    if (ev.globs) entry.globs = ev.globs;
+    if (ev.trigger_file_path) entry.trigger = rel(ev.trigger_file_path);
+}
+// SubagentStart / SubagentStop: which subagent ran.
+if (event === "SubagentStart" || event === "SubagentStop") {
+    entry.agent = ev.agent_type;
+    entry.agent_id = ev.agent_id;
+}
+
+// `usage` tags the things we track as evidence: rules, subagents, MCP servers.
+//   rule:<name>          a .claude/rules/<name>.md file was loaded
+//   subagent:<type>      a subagent was launched (Agent tool) or started/stopped
+//   mcp:<server>:<tool>  an MCP tool was called
+const ruleMatch = /\.claude\/rules\/(.+)\.md$/.exec(entry.path ?? "");
+const mcpMatch = /^mcp__(.+?)__(.+)$/.exec(tool);
+if (event === "InstructionsLoaded" && ruleMatch) entry.usage = `rule:${ruleMatch[1]}`;
+else if (event.startsWith("Subagent")) entry.usage = `subagent:${entry.agent}`;
+else if (entry.subagent) entry.usage = `subagent:${entry.subagent}`;
+else if (mcpMatch) entry.usage = `mcp:${mcpMatch[1]}:${mcpMatch[2]}`;
 
 if (event === "PostToolUse") {
     entry.exit = 0;
