@@ -32,7 +32,7 @@ docker compose exec app vendor/bin/phpstan analyse --memory-limit=2G   # Larasta
 docker compose exec node npm install && docker compose exec node npm run build
 ```
 
-Larastan config is `phpstan.neon` (level 5, paths `app/`). Don't lower the level or add ignores to make analysis pass — fix the code.
+Larastan config is `phpstan.neon` (level 6, paths `app/`). Don't lower the level or add ignores to make analysis pass — fix the code.
 
 Tests are owned by the `laravel-tester` subagent (`.claude/agents/laravel-tester.md`, TDD): delegate writing failing tests to it before implementing a feature or fix, implement until they pass, then have it verify the suite. It edits only `tests/`.
 
