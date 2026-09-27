@@ -31,7 +31,10 @@
           {
             "type": "command",
             "command": "sh",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/protect-env.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/protect-env.mjs"
+            ],
             "timeout": 10
           }
         ]
@@ -42,7 +45,10 @@
           {
             "type": "command",
             "command": "sh",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
             "timeout": 10
           }
         ]
@@ -55,8 +61,24 @@
           {
             "type": "command",
             "command": "sh",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
             "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/phpstan.sh"
+            ],
+            "timeout": 180
           }
         ]
       }
@@ -68,12 +90,33 @@
           {
             "type": "command",
             "command": "sh",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh", "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/run-node.sh",
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/log-actions.mjs"
+            ],
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh",
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/phpstan.sh",
+              "stop"
+            ],
+            "timeout": 180
           }
         ]
       }
     ]
   },
-  "enabledMcpjsonServers": ["context7"]
+  "enabledMcpjsonServers": [
+    "context7",
+    "laravel-boost"
+  ]
 }
