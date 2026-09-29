@@ -9,7 +9,6 @@ class WordCountServiceTest extends TestCase
 {
     public function test_counts_words_case_insensitively_with_lowercased_keys(): void
     {
-        $this->assertTrue(false);
         $this->assertSame(['hello' => 2], (new WordCountService)->countWords('Hello hello'));
     }
 

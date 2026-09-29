@@ -9,7 +9,6 @@ class SampleServiceTest extends TestCase
 {
     public function test_greet_returns_hello_world(): void
     {
-        $this->markTestSkipped();
         $service = new SampleService;
 
         $this->assertSame('Hello world', $service->greet());
