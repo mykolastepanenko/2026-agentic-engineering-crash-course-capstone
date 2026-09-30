@@ -16,4 +16,14 @@ class HomePageTest extends TestCase
         $response->assertViewIs('app');
         $response->assertSee('id="app"', false);
     }
+
+    public function test_home_page_includes_inline_theme_init_script_in_head_before_app(): void
+    {
+        $this->withoutVite();
+
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['<head', '<script id="theme-init">', '</head>', '<div id="app"'], false);
+    }
 }

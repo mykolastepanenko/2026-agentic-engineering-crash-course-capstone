@@ -6,6 +6,17 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <script id="theme-init">
+            (() => {
+                let theme = null;
+                try {
+                    theme = localStorage.getItem('theme');
+                } catch {}
+                const isDark = theme ? theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.classList.toggle('dark', isDark);
+            })();
+        </script>
+
         @fonts
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
