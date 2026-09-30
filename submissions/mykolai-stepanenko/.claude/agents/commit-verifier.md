@@ -18,7 +18,7 @@ You receive `previous_head`, `new_head` and `message` from git-committer's repor
 3. **Fresh:** `git log -1 --format=%ct` is within the last 10 minutes of `date +%s`.
 4. **Message:** `git log -1 --format=%s` equals the reported `message`.
 5. **Not empty:** `git show --stat --format= HEAD` lists at least one file.
-6. **Clean tree:** `git status --porcelain -- .` is empty (everything under the project was committed). Ignored files don't count.
+6. **Clean tree:** `git status --porcelain -- . ':!.agent-log/actions.jsonl'` is empty (everything under the project was committed). Ignored files don't count. `.agent-log/actions.jsonl` is excluded because the `log-actions.mjs` hook appends to it on every agent action, including the committer's and yours, so it is always dirty right after a commit.
 
 ## Report
 
