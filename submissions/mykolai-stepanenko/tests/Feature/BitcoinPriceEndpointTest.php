@@ -66,4 +66,48 @@ class BitcoinPriceEndpointTest extends TestCase
             'message' => 'Bitcoin price is temporarily unavailable.',
         ]);
     }
+
+    public function test_returns_price_from_selected_provider_without_calling_others(): void
+    {
+        Http::fake([
+            self::COINGECKO_URL => Http::response(['bitcoin' => ['uah' => 3793253]]),
+            self::COINBASE_URL => Http::response(['data' => ['amount' => '3788336.34', 'base' => 'BTC', 'currency' => 'UAH']]),
+        ]);
+
+        $response = $this->getJson('/api/btc-price?provider=coinbase');
+
+        $response->assertOk()->assertExactJson([
+            'price' => 3788336.34,
+            'currency' => 'UAH',
+            'provider' => 'coinbase',
+        ]);
+        Http::assertNotSent(fn (Request $request): bool => $request->url() === self::COINGECKO_URL);
+    }
+
+    public function test_returns_503_without_fallback_when_selected_provider_fails(): void
+    {
+        Http::fake([
+            self::COINGECKO_URL => Http::response(['error' => 'boom'], 500),
+            self::COINBASE_URL => Http::response(['data' => ['amount' => '3788336.34']]),
+        ]);
+
+        $response = $this->getJson('/api/btc-price?provider=coingecko');
+
+        $response->assertStatus(503)->assertExactJson([
+            'message' => 'Bitcoin price is temporarily unavailable.',
+        ]);
+        Http::assertNotSent(fn (Request $request): bool => $request->url() === self::COINBASE_URL);
+    }
+
+    public function test_returns_422_for_unknown_provider(): void
+    {
+        Http::fake([
+            self::COINGECKO_URL => Http::response(['bitcoin' => ['uah' => 3793253]]),
+            self::COINBASE_URL => Http::response(['data' => ['amount' => '3788336.34']]),
+        ]);
+
+        $response = $this->getJson('/api/btc-price?provider=binance');
+
+        $response->assertStatus(422)->assertJsonValidationErrors('provider');
+    }
 }
