@@ -30,3 +30,8 @@ schema: spec-driven
 #     archive:
 #       guidance:
 #         - Summarize the archive outcome before finishing
+
+operations:
+  apply:
+    guidance:
+      - When the apply run ends with all tasks complete (never when paused or blocked), invoke the git-committer subagent, then the commit-verifier subagent with git-committer's report, and include the commit sha and verdict in the final summary.

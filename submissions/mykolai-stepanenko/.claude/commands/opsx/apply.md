@@ -196,3 +196,10 @@ This skill supports the "actions on a change" model:
 
 - **Can be invoked anytime**: Before all artifacts are done (if tasks exist), after partial implementation, interleaved with other actions
 - **Allows artifact updates**: If implementation reveals design issues, suggest updating artifacts - not phase-locked, work fluidly
+
+**Post-apply commit (project-specific)**
+
+Only when this apply run ends with **all tasks complete** (the "Implementation Complete" output, or `state: "all_done"`), and never when paused or blocked:
+1. Invoke the `git-committer` subagent with the change name. Wait for its report.
+2. Then invoke the `commit-verifier` subagent, passing git-committer's full report (`status`, `previous_head`, `new_head`, `message`). Wait for its verdict.
+3. Include the commit sha, message and verifier verdict in the final summary. If git-committer aborts or the verifier FAILs, report it and do not retry on your own.
