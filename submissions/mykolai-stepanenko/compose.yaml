@@ -31,7 +31,7 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
     ports:
-      - "${FORWARD_DB_PORT:-33060}:3306"
+      - "${FORWARD_DB_PORT:-3306}:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
@@ -56,7 +56,7 @@ services:
   redis:
     image: redis:8-alpine
     ports:
-      - "${FORWARD_REDIS_PORT:-63790}:6379"
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
     volumes:
       - redis-data:/data
     healthcheck:
